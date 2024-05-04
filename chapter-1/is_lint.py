@@ -7,9 +7,9 @@ def is_exp(exp):
     match exp:
         case ast.Constant(x):
             return True
-        case ast.Call(ast.Name("input_int", [])):
+        case ast.Call(ast.Name("input_int"), []):
             return True
-        case ast.UnaryOp(ast.USub(e)):
+        case ast.UnaryOp(ast.USub(), e):
             return is_exp(e)
         case ast.BinOp(e1, ast.Add(), e2):
             return is_exp(e1) and is_exp(e2)
@@ -21,10 +21,10 @@ def is_exp(exp):
 
 def is_stmt(s):
     match s:
-        case ast.Expr(ast.print(e)):
-            return is_exp(e)
-        case ast.Expr(e):
-            return is_exp(e)
+        case ast.Expr(ast.Call(ast.Name("print"), [exp])):
+            return is_exp(exp)
+        case ast.Expr(exp):
+            return is_exp(exp)
         case _:
             return False
 
